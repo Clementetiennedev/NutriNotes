@@ -105,17 +105,19 @@
                 <p style="color: #cccccc;">Période : {{ $periodLabel }}</p>
             </div>
             
-            <!-- Graphiques en grille 2x2 -->
+            <!-- Graphiques en grille responsive -->
             <div class="charts-grid">
                 <!-- Graphique du poids -->
                 <div class="chart-card">
                     <div class="chart-card-header">
                         <h3 class="text-lg font-medium flex items-center" style="color: #ffffff;">
-                            ⚖️ Évolution du Poids
+                            ⚖️ Poids
                         </h3>
                     </div>
                     <div class="chart-card-content">
-                        <canvas id="weightChart" width="400" height="300"></canvas>
+                        <div class="chart-container">
+                            <canvas id="weightChart"></canvas>
+                        </div>
                     </div>
                 </div>
 
@@ -123,11 +125,13 @@
                 <div class="chart-card" style="animation-delay: 0.1s;">
                     <div class="chart-card-header">
                         <h3 class="text-lg font-medium flex items-center" style="color: #ffffff;">
-                            🍔 Apport Calorique
+                            🍔 Calories
                         </h3>
                     </div>
                     <div class="chart-card-content">
-                        <canvas id="caloriesChart" width="400" height="300"></canvas>
+                        <div class="chart-container">
+                            <canvas id="caloriesChart"></canvas>
+                        </div>
                     </div>
                 </div>
 
@@ -135,11 +139,13 @@
                 <div class="chart-card chart-card-wide" style="animation-delay: 0.2s;">
                     <div class="chart-card-header">
                         <h3 class="text-lg font-medium flex items-center" style="color: #ffffff;">
-                            👟 Activité Physique
+                            👟 Activité
                         </h3>
                     </div>
                     <div class="chart-card-content">
-                        <canvas id="stepsChart" width="400" height="200"></canvas>
+                        <div class="chart-container">
+                            <canvas id="stepsChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -384,7 +390,7 @@
             transform: rotate(180deg);
         }
 
-        /* Cartes de statistiques (reprise du dashboard) */
+        /* Cartes de statistiques */
         .stats-card {
             background: linear-gradient(135deg, #3b3b3b, #2a2a2a);
             border: 2px solid #bf0000;
@@ -464,12 +470,6 @@
             gap: 24px;
         }
 
-        @media (max-width: 1024px) {
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
         .chart-card {
             background: linear-gradient(135deg, #3b3b3b, #2a2a2a);
             border: 2px solid #bf0000;
@@ -498,10 +498,18 @@
         .chart-card-content {
             padding: 24px;
             height: 350px;
+            position: relative;
         }
 
         .chart-card-wide .chart-card-content {
             height: 250px;
+        }
+
+        /* Container responsive pour les canvas */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
         }
 
         /* Boutons d'action */
@@ -528,7 +536,7 @@
             background: linear-gradient(135deg, #ff0000, #bf0000);
         }
 
-        /* Table moderne (reprise du dashboard) */
+        /* Table moderne */
         .data-table-card {
             background: linear-gradient(135deg, #3b3b3b, #2a2a2a);
             border: 2px solid #bf0000;
@@ -665,6 +673,213 @@
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
+        }
+
+        /* === RESPONSIVE MOBILE (PRIORITÉ) === */
+        @media (max-width: 640px) {
+            /* Header responsive */
+            .flex.justify-between.items-center {
+                flex-direction: column !important;
+                gap: 16px !important;
+                text-align: center !important;
+                align-items: stretch !important;
+            }
+            
+            h2.text-4xl {
+                font-size: 1.75rem !important;
+                line-height: 1.2 !important;
+            }
+            
+            .action-btn {
+                width: 100% !important;
+                justify-content: center !important;
+                padding: 14px 20px !important;
+                font-size: 16px !important;
+                min-height: 44px !important;
+            }
+
+            /* Sélecteur de période */
+            .custom-select {
+                font-size: 16px !important; /* Évite le zoom iOS */
+                padding: 16px !important;
+                min-height: 44px !important;
+            }
+
+            /* Grille des stats - 1 colonne compacte */
+            .grid.md\\:grid-cols-3 {
+                grid-template-columns: 1fr !important;
+                gap: 12px !important;
+            }
+
+            .stats-card {
+                padding: 16px !important;
+                margin-bottom: 0 !important;
+            }
+
+            .stats-card:hover {
+                transform: none !important; /* Pas d'animation sur mobile */
+            }
+
+            .stats-icon {
+                width: 40px !important;
+                height: 40px !important;
+            }
+
+            .stats-value {
+                font-size: 20px !important;
+            }
+
+            /* GRAPHIQUES OPTIMISÉS MOBILE */
+            .charts-grid {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
+            
+            .chart-card-header {
+                padding: 16px !important;
+            }
+            
+            .chart-card-header h3 {
+                font-size: 16px !important;
+            }
+            
+            .chart-card-content {
+                height: 200px !important; /* Plus petit sur mobile */
+                padding: 12px !important;
+            }
+            
+            .chart-card-wide .chart-card-content {
+                height: 180px !important;
+            }
+
+            /* Canvas responsive */
+            canvas {
+                max-width: 100% !important;
+                height: auto !important;
+            }
+
+            /* TABLEAU MOBILE OPTIMISÉ */
+            .data-table-content {
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+            }
+
+            .modern-table {
+                font-size: 11px !important;
+                min-width: 480px !important; /* Force scroll horizontal */
+            }
+            
+            .modern-table th,
+            .modern-table td {
+                padding: 8px 6px !important;
+                white-space: nowrap !important;
+            }
+            
+            .modern-table th:first-child,
+            .modern-table td:first-child {
+                position: sticky !important;
+                left: 0 !important;
+                background: #2a2a2a !important;
+                z-index: 10 !important;
+            }
+
+            /* Cache colonnes moins importantes sur mobile */
+            .modern-table th:nth-child(5),
+            .modern-table td:nth-child(5) {
+                display: none !important;
+            }
+
+            /* Boutons d'action optimisés */
+            .edit-btn,
+            .delete-btn {
+                padding: 8px 10px !important;
+                font-size: 11px !important;
+                min-height: 36px !important;
+                display: block !important;
+                margin-bottom: 4px !important;
+                text-align: center !important;
+            }
+
+            /* État vide mobile */
+            .empty-state {
+                padding: 40px 16px !important;
+            }
+
+            .empty-icon {
+                font-size: 48px !important;
+            }
+
+            .empty-state h3 {
+                font-size: 20px !important;
+            }
+
+            .empty-action {
+                width: 100% !important;
+                justify-content: center !important;
+                min-height: 44px !important;
+            }
+        }
+
+        /* === TABLETTES PORTRAIT (641px - 768px) === */
+        @media (min-width: 641px) and (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+            }
+
+            .chart-card-content {
+                height: 280px !important;
+            }
+
+            .grid.md\\:grid-cols-3 {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
+
+        /* === TABLETTES PAYSAGE (769px - 1024px) === */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .charts-grid {
+                grid-template-columns: 1fr 1fr !important;
+            }
+
+            .chart-card-wide {
+                grid-column: 1 / -1 !important;
+            }
+        }
+
+        /* === AMÉLIORATION TACTILE === */
+        @media (hover: none) {
+            /* Supprime les hover effects sur tactile */
+            .stats-card:hover,
+            .action-btn:hover,
+            .table-row:hover,
+            .chart-card:hover {
+                transform: none !important;
+            }
+
+            /* Boutons plus gros pour les doigts */
+            .action-btn,
+            .edit-btn,
+            .delete-btn,
+            .empty-action {
+                min-height: 44px !important; /* Taille tactile recommandée */
+            }
+        }
+
+        /* === OPTIMISATION PERFORMANCE MOBILE === */
+        @media (max-width: 640px) {
+            /* Réduit les animations pour économiser la batterie */
+            *, *::before, *::after {
+                animation-duration: 0.3s !important;
+                transition-duration: 0.2s !important;
+            }
+
+            /* Optimise les gradients pour mobile */
+            .stats-card,
+            .chart-card,
+            .data-table-card {
+                background: #3b3b3b !important; /* Fond uni sur mobile */
+            }
         }
     </style>
 @endsection

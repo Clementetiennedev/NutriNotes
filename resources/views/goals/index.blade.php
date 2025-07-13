@@ -542,5 +542,67 @@
                 font-size: 20px;
             }
         }
+
+        /* === RESPONSIVE GOALS === */
+        @media (max-width: 640px) {
+            /* Titre */
+            h2.text-4xl {
+                font-size: 2rem !important;
+                text-align: center !important;
+            }
+            
+            .current-goal-indicator {
+                margin-bottom: 24px !important;
+            }
+            
+            .goal-badge-content {
+                flex-direction: column !important;
+                gap: 12px !important;
+            }
+            
+            .goal-icon {
+                font-size: 24px !important;
+            }
+
+            /* Grille des objectifs - 1 colonne */
+            .goals-grid {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
+            
+            .goal-label-full {
+                padding: 16px !important;
+            }
+            
+            .goal-icon-large {
+                font-size: 32px !important;
+            }
+            
+            .goal-title-large {
+                font-size: 18px !important;
+            }
+            
+            .goal-description {
+                font-size: 12px !important;
+            }
+
+            /* Cartes d'info - 1 colonne */
+            .info-cards-grid {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
+            
+            .info-card-header {
+                padding: 16px !important;
+            }
+            
+            .info-card-content {
+                padding: 16px !important;
+            }
+            
+            .advice-list li {
+                font-size: 12px !important;
+            }
+        }
     </style>
 @endsection

@@ -2,9 +2,13 @@
 
 Une application moderne de suivi nutritionnel développée avec Laravel.
 
+## 🌐 **DEMO LIVE** 
+**✨ Application déployée : http://82.112.255.241**
+
 <p align="center">
   <img src="https://img.shields.io/badge/Laravel-10.x-red.svg" alt="Laravel Version">
-  <img src="https://img.shields.io/badge/PHP-8.1+-blue.svg" alt="PHP Version">
+  <img src="https://img.shields.io/badge/PHP-8.4+-blue.svg" alt="PHP Version">
+  <img src="https://img.shields.io/badge/Status-LIVE-brightgreen.svg" alt="Status">
   <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License">
 </p>
 

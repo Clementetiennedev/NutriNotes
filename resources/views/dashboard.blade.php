@@ -180,7 +180,8 @@
         </div>
         <div class="data-table-content">
             @if($stats->count() > 0)
-                <div class="overflow-x-auto">
+                <!-- Version desktop/tablette -->
+                <div class="desktop-table-view overflow-x-auto">
                     <table class="modern-table">
                         <thead>
                             <tr>
@@ -189,7 +190,7 @@
                                 <th>🍔 Calories</th>
                                 <th>👟 Pas</th>
                                 <th>📝 Notes</th>
-                                <th>🗑️ Actions</th>
+                                <th>🔧 Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -202,21 +203,13 @@
                                     <td>{{ $stat->notes ? Str::limit($stat->notes, 50) : '-' }}</td>
                                     <td>
                                         <div class="flex gap-2">
-                                            <!-- Bouton Modifier -->
-                                            <a href="{{ route('stats.edit', $stat) }}" 
-                                               class="edit-btn">
-                                                ✏️ Modifier
-                                            </a>
-                                            
-                                            <!-- Bouton Supprimer -->
+                                            <a href="{{ route('stats.edit', $stat) }}" class="edit-btn">✏️ Modifier</a>
                                             <form method="POST" action="{{ route('stats.destroy', $stat) }}" class="inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" 
-                                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette entrée ?')"
-                                                        class="delete-btn">
-                                                    🗑️ Supprimer
-                                                </button>
+                                                        onclick="return confirm('Supprimer cette entrée ?')"
+                                                        class="delete-btn">🗑️</button>
                                             </form>
                                         </div>
                                     </td>
@@ -225,11 +218,53 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Version mobile avec cartes -->
+                <div class="mobile-card-view" style="display: none;">
+                    @foreach($stats as $stat)
+                        <div class="mobile-stat-card">
+                            <div class="mobile-stat-header">
+                                <span>📅 {{ $stat->date->format('d/m/Y') }}</span>
+                                <div class="mobile-stat-actions">
+                                    <a href="{{ route('stats.edit', $stat) }}" class="edit-btn">✏️</a>
+                                    <form method="POST" action="{{ route('stats.destroy', $stat) }}" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" 
+                                                onclick="return confirm('Supprimer ?')"
+                                                class="delete-btn">🗑️</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="mobile-stat-content">
+                                <div class="mobile-stat-item">
+                                    <strong>⚖️ Poids:</strong><br>
+                                    {{ $stat->weight ? $stat->weight . ' kg' : '-' }}
+                                </div>
+                                <div class="mobile-stat-item">
+                                    <strong>🍔 Calories:</strong><br>
+                                    {{ $stat->calories ? $stat->calories . ' kcal' : '-' }}
+                                </div>
+                                <div class="mobile-stat-item">
+                                    <strong>👟 Pas:</strong><br>
+                                    {{ $stat->steps ? number_format($stat->steps) : '-' }}
+                                </div>
+                                @if($stat->notes)
+                                <div class="mobile-stat-item">
+                                    <strong>📝 Notes:</strong><br>
+                                    {{ Str::limit($stat->notes, 100) }}
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             @else
+                <!-- État vide reste pareil -->
                 <div class="empty-state">
                     <div class="empty-icon">📊</div>
-                    <h3>Aucune statistique pour le moment</h3>
-                    <p>Commencez dès maintenant à suivre vos données</p>
+                    <h3>Aucune statistique</h3>
+                    <p>Commencez dès maintenant</p>
                     <a href="{{ route('stats.create') }}" class="empty-action">
                         Ajoutez votre première entrée !
                     </a>
@@ -558,15 +593,211 @@
             box-shadow: 0 8px 16px rgba(191, 0, 0, 0.3);
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
+        /* === RESPONSIVE MOBILE FIRST === */
+        @media (max-width: 640px) {
+            /* Titre principal */
+            .mb-8 h1 {
+                font-size: 2rem !important;
+                line-height: 1.2;
+            }
+            
+            .mb-8 p {
+                font-size: 1rem !important;
+            }
+
+            /* Sélecteur de période */
+            .custom-select {
+                font-size: 16px !important; /* Évite le zoom iOS */
+            }
+
+            /* Grille des stats - 1 colonne sur mobile */
+            .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-4 {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+
+            /* Cartes de stats plus compactes */
+            .stats-card {
+                padding: 16px !important;
+            }
+
+            .stats-card:hover {
+                transform: none !important; /* Pas d'animation sur mobile */
+            }
+
+            .stats-value {
+                font-size: 20px !important;
+            }
+
+            .stats-icon {
+                width: 40px !important;
+                height: 40px !important;
+            }
+
+            /* Tendance plus petite */
+            .trend-indicator {
+                display: none; /* Cache les tendances sur très petit écran */
+            }
+
+            /* Actions rapides */
             .action-content {
-                flex-direction: column;
+                flex-direction: column !important;
+                gap: 12px !important;
+                padding: 16px !important;
             }
             
             .action-btn {
-                width: 100%;
-                justify-content: center;
+                width: 100% !important;
+                justify-content: center !important;
+                padding: 14px 20px !important;
+                font-size: 16px !important;
+            }
+
+            /* Tableau responsive */
+            .data-table-content {
+                overflow-x: auto !important;
+            }
+
+            .modern-table {
+                min-width: 600px; /* Force le scroll horizontal */
+                font-size: 14px !important;
+            }
+
+            .modern-table th,
+            .modern-table td {
+                padding: 12px 8px !important;
+                white-space: nowrap;
+            }
+
+            /* Cache certaines colonnes sur mobile */
+            .modern-table th:nth-child(5),
+            .modern-table td:nth-child(5) {
+                display: none; /* Cache les notes */
+            }
+
+            /* Boutons d'action plus gros */
+            .edit-btn,
+            .delete-btn {
+                padding: 10px 12px !important;
+                font-size: 12px !important;
+                display: block !important;
+                margin-bottom: 4px !important;
+            }
+
+            /* État vide */
+            .empty-state {
+                padding: 40px 16px !important;
+            }
+
+            .empty-icon {
+                font-size: 48px !important;
+            }
+
+            .empty-state h3 {
+                font-size: 20px !important;
+            }
+        }
+
+        /* === TABLETTES (641px à 768px) === */
+        @media (min-width: 641px) and (max-width: 768px) {
+            /* Grille 2 colonnes sur tablette */
+            .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-4 {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+
+            /* Tableau avec plus d'espace */
+            .modern-table th,
+            .modern-table td {
+                padding: 14px 16px !important;
+            }
+
+            /* Actions en ligne */
+            .action-content {
+                flex-direction: row !important;
+                flex-wrap: wrap !important;
+            }
+
+            .action-btn {
+                flex: 1 !important;
+                min-width: 200px !important;
+            }
+        }
+
+        /* === GRANDES TABLETTES ET PLUS (769px+) === */
+        @media (min-width: 769px) {
+            /* Réafficher les tendances */
+            .trend-indicator {
+                display: flex !important;
+            }
+
+            /* Réafficher les notes */
+            .modern-table th:nth-child(5),
+            .modern-table td:nth-child(5) {
+                display: table-cell !important;
+            }
+        }
+
+        /* === AMÉLIORATION TACTILE === */
+        @media (hover: none) {
+            /* Supprime les hover effects sur tactile */
+            .stats-card:hover,
+            .action-btn:hover,
+            .table-row:hover {
+                transform: none !important;
+            }
+
+            /* Boutons plus gros pour les doigts */
+            .action-btn,
+            .edit-btn,
+            .delete-btn {
+                min-height: 44px !important; /* Taille tactile recommandée */
+            }
+        }
+
+        /* === TABLE MOBILE ALTERNATIVE === */
+        @media (max-width: 640px) {
+            /* Version carte pour mobile */
+            .mobile-card-view {
+                display: block !important;
+            }
+
+            .desktop-table-view {
+                display: none !important;
+            }
+
+            .mobile-stat-card {
+                background: rgba(191, 0, 0, 0.1);
+                border: 1px solid #bf0000;
+                border-radius: 12px;
+                padding: 16px;
+                margin-bottom: 12px;
+            }
+
+            .mobile-stat-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+                font-weight: 600;
+                color: #ffffff;
+            }
+
+            .mobile-stat-content {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+
+            .mobile-stat-item {
+                color: #cccccc;
+                font-size: 14px;
+            }
+
+            .mobile-stat-actions {
+                display: flex;
+                gap: 8px;
+                justify-content: flex-end;
             }
         }
     </style>

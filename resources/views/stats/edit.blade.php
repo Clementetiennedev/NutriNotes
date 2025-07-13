@@ -170,3 +170,54 @@
         });
     </script>
 @endsection
+
+<style>
+/* === RESPONSIVE FORM === */
+@media (max-width: 640px) {
+    .max-w-3xl {
+        max-width: 100% !important;
+        padding: 0 16px !important;
+    }
+    
+    h2.text-3xl {
+        font-size: 1.5rem !important;
+        text-align: center !important;
+    }
+    
+    .p-6 {
+        padding: 16px !important;
+    }
+    
+    /* Champs de formulaire */
+    input[type="date"],
+    input[type="number"],
+    textarea {
+        font-size: 16px !important; /* Évite le zoom iOS */
+        padding: 12px !important;
+    }
+    
+    /* Boutons */
+    .flex.items-center.justify-between {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+    
+    .flex.items-center.justify-between > * {
+        width: 100% !important;
+        text-align: center !important;
+    }
+    
+    /* Labels plus lisibles */
+    label {
+        font-size: 14px !important;
+        margin-bottom: 8px !important;
+    }
+}
+
+/* === AMÉLIORATION TACTILE === */
+@media (hover: none) {
+    input, textarea, button, a {
+        min-height: 44px !important;
+    }
+}
+</style>
